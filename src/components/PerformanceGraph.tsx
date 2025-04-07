@@ -2,7 +2,6 @@
 import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useQuery } from "@tanstack/react-query";
 import { fetchPerformanceData, fetchShipmentsTableData } from "@/api/mockData";
 import {
@@ -19,14 +18,27 @@ import {
 } from "recharts";
 import { SearchIcon, SlidersHorizontal } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
+    // Identify which line the user is hovering on
+    const isValueLine = payload[0]?.dataKey === 'value';
+    const isShipmentLine = payload[0]?.dataKey === 'shipments';
+    
     return (
-      <div className="bg-white p-3 border border-gray-200 shadow-md rounded-md">
-        <p className="font-medium">{`${label}`}</p>
-        <p className="text-blue-600">{`Shipments: ${payload[0].value}`}</p>
-        <p className="text-blue-400">{`Value: $${payload[1].value}M`}</p>
+      <div className="bg-white p-3 border border-gray-200 shadow-md rounded-md text-xs">
+        <p className="font-medium mb-1">{label}</p>
+        {payload.map((entry: any) => (
+          <div key={entry.dataKey}>
+            {entry.dataKey === 'shipments' && (
+              <p className="text-blue-600">Shipments: {entry.value}</p>
+            )}
+            {entry.dataKey === 'value' && (
+              <p className="text-blue-400">Value: ${entry.value}M</p>
+            )}
+          </div>
+        ))}
       </div>
     );
   }
@@ -41,66 +53,66 @@ const ShipmentsTable = () => {
   });
 
   if (isLoading) {
-    return <div className="animate-pulse bg-gray-200 h-64 rounded-md"></div>;
+    return <div className="animate-pulse bg-gray-200 h-48 rounded-md"></div>;
   }
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-4">
+      <div className="flex justify-between items-center mb-3">
         <div className="flex items-center">
-          <h3 className="text-xl font-semibold mr-2">Shipments</h3>
-          <span className="bg-blue-100 text-blue-800 px-2 py-0.5 rounded-md text-sm">
+          <h3 className="text-sm font-semibold mr-2">Shipments</h3>
+          <span className="bg-blue-100 text-blue-800 px-2 py-0.5 rounded-md text-xs">
             {data?.count}
           </span>
         </div>
         
         <div className="flex items-center">
-          <h3 className="text-xl font-semibold mr-2">Value</h3>
-          <span className="text-blue-600 font-semibold text-xl">
+          <h3 className="text-sm font-semibold mr-2">Value</h3>
+          <span className="text-blue-600 font-semibold text-sm">
             {data?.value}
           </span>
         </div>
       </div>
       
-      <div className="flex mb-4 border-b">
-        <Button variant="ghost" className="border-b-2 border-blue-600 rounded-none px-6">
-          Month
-        </Button>
-        <Button variant="ghost" className="text-gray-500 rounded-none px-6">
-          QTR
-        </Button>
-        <Button variant="ghost" className="text-gray-500 rounded-none px-6">
-          Year
-        </Button>
-      </div>
-      
-      <div className="flex justify-between mb-4">
-        <div className="relative w-full max-w-sm">
-          <SearchIcon className="absolute left-3 top-2.5 h-4 w-4 text-gray-500" />
+      <div className="flex items-center mb-3 space-x-2">
+        <div className="flex border-b">
+          <Button variant="ghost" className="border-b-2 border-blue-600 rounded-none px-3 text-xs h-8">
+            Month
+          </Button>
+          <Button variant="ghost" className="text-gray-500 rounded-none px-3 text-xs h-8">
+            QTR
+          </Button>
+          <Button variant="ghost" className="text-gray-500 rounded-none px-3 text-xs h-8">
+            Year
+          </Button>
+        </div>
+        
+        <div className="relative flex-1">
+          <SearchIcon className="absolute left-2 top-2 h-4 w-4 text-gray-500" />
           <Input 
             placeholder="Search" 
-            className="pl-9 border"
+            className="pl-8 border text-xs h-8"
           />
         </div>
         
-        <Button variant="outline" className="flex items-center gap-1">
-          <SlidersHorizontal className="h-4 w-4" /> Filters
+        <Button variant="outline" className="flex items-center gap-1 text-xs h-8">
+          <SlidersHorizontal className="h-3 w-3" /> Filters
         </Button>
       </div>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <div className="flex justify-between text-sm text-gray-500 mb-1 px-2">
+          <div className="flex justify-between text-xs text-gray-500 mb-1 px-2">
             <span>Month</span>
             <span>Rating</span>
           </div>
           
           {data?.months.map((month: any, index: number) => (
-            <div key={index} className="flex justify-between items-center py-3 border-b">
-              <span className="font-medium">{month.name}</span>
+            <div key={index} className="flex justify-between items-center py-2 border-b text-sm">
+              <span className="font-medium text-xs">{month.name}</span>
               
-              <div className="flex-1 mx-6">
-                <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
+              <div className="flex-1 mx-4">
+                <div className="h-1.5 bg-gray-200 rounded-full overflow-hidden">
                   <div 
                     className="h-full bg-blue-500 rounded-full"
                     style={{ width: `${month.shipments}%` }}
@@ -109,7 +121,7 @@ const ShipmentsTable = () => {
               </div>
               
               <div className="flex items-center">
-                <span className="font-medium mr-2">{month.shipments}</span>
+                <span className="font-medium text-xs mr-1">{month.shipments}</span>
                 <span className={`text-xs ${month.growth > 0 ? 'text-green-500' : 'text-red-500'}`}>
                   {month.growth > 0 ? '↑' : '↓'} {Math.abs(month.growth)}%
                 </span>
@@ -119,17 +131,17 @@ const ShipmentsTable = () => {
         </div>
         
         <div>
-          <div className="flex justify-between text-sm text-gray-500 mb-1 px-2">
+          <div className="flex justify-between text-xs text-gray-500 mb-1 px-2">
             <span>Month</span>
             <span>Rating</span>
           </div>
           
           {data?.months.map((month: any, index: number) => (
-            <div key={index} className="flex justify-between items-center py-3 border-b">
-              <span className="font-medium">{month.name}</span>
+            <div key={index} className="flex justify-between items-center py-2 border-b text-sm">
+              <span className="font-medium text-xs">{month.name}</span>
               
-              <div className="flex-1 mx-6">
-                <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
+              <div className="flex-1 mx-4">
+                <div className="h-1.5 bg-gray-200 rounded-full overflow-hidden">
                   <div 
                     className="h-full bg-blue-500 rounded-full"
                     style={{ width: `${month.value}%` }}
@@ -138,7 +150,7 @@ const ShipmentsTable = () => {
               </div>
               
               <div className="flex items-center">
-                <span className="font-medium mr-2">{month.value}</span>
+                <span className="font-medium text-xs mr-1">{month.value}</span>
                 <span className={`text-xs ${month.valueGrowth > 0 ? 'text-green-500' : 'text-red-500'}`}>
                   {month.valueGrowth > 0 ? '↑' : '↓'} {Math.abs(month.valueGrowth)}%
                 </span>
@@ -160,7 +172,7 @@ const PerformanceGraph = () => {
   });
 
   if (isLoading) {
-    return <div className="animate-pulse bg-gray-200 h-96 rounded-md"></div>;
+    return <div className="animate-pulse bg-gray-200 h-64 rounded-md"></div>;
   }
 
   // Fixed reference dot placement - using indexes instead of trying to access exact positions
@@ -196,59 +208,60 @@ const PerformanceGraph = () => {
   };
 
   return (
-    <Card className="p-6">
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-semibold">Import Performance</h2>
+    <Card className="p-4 shadow-sm">
+      <div className="flex justify-between items-center mb-3">
+        <h2 className="text-sm font-semibold">Import Performance</h2>
         
         <div className="flex items-center">
-          <div className="mr-4 font-medium">
-            Value: <span className="text-blue-600">{data?.totalValue}</span>
+          <div className="mr-4 text-sm">
+            Value: <span className="text-blue-600 font-medium">{data?.totalValue}</span>
           </div>
           
-          <Button 
-            variant={view === "graph" ? "default" : "outline"}
-            className="mr-2"
-            onClick={() => setView("graph")}
+          <Select
+            defaultValue="graph"
+            onValueChange={(value) => setView(value)}
           >
-            Graph View
-          </Button>
-          
-          <Button 
-            variant={view === "table" ? "default" : "outline"}
-            onClick={() => setView("table")}
-          >
-            Table View
-          </Button>
+            <SelectTrigger className="w-[140px] h-8 text-xs">
+              <SelectValue placeholder="View" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="graph" className="text-xs">Graph View</SelectItem>
+              <SelectItem value="table" className="text-xs">Table View</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
       </div>
       
       {view === "graph" ? (
-        <div className="h-[400px]">
+        <div className="h-[350px]">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart
               data={data?.monthlyData}
               margin={{ top: 20, right: 30, left: 20, bottom: 10 }}
             >
-              <CartesianGrid strokeDasharray="3 3" vertical={false} />
+              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f5f5f5" />
               <XAxis 
                 dataKey="month" 
                 axisLine={false} 
                 tickLine={false}
-                label={{ value: 'Months', position: 'insideBottom', offset: -5 }}
+                tick={{ fontSize: 11 }}
+                label={{ value: 'Months', position: 'insideBottom', offset: -5, fontSize: 11 }}
               />
               <YAxis 
                 yAxisId="left"
                 orientation="left" 
                 axisLine={false} 
                 tickLine={false}
-                label={{ value: 'Number of Shipments', angle: -90, position: 'insideLeft' }}
+                tick={{ fontSize: 11 }}
+                label={{ value: 'Number of Shipments', angle: -90, position: 'insideLeft', fontSize: 11 }}
               />
               <YAxis 
                 yAxisId="right"
                 orientation="right" 
                 axisLine={false} 
                 tickLine={false} 
-                label={{ value: 'Value of Shipments', angle: 90, position: 'insideRight' }}
+                tick={{ fontSize: 11 }}
+                label={{ value: 'Value of Shipments', angle: 90, position: 'insideRight', fontSize: 11 }}
               />
               <Tooltip content={<CustomTooltip />} />
               
@@ -258,8 +271,8 @@ const PerformanceGraph = () => {
                 dataKey="shipments"
                 stroke="#3b82f6"
                 strokeWidth={2}
-                dot={{ r: 4 }}
-                activeDot={{ r: 8 }}
+                dot={{ r: 3 }}
+                activeDot={{ r: 6 }}
               />
               
               <Line
@@ -268,25 +281,12 @@ const PerformanceGraph = () => {
                 dataKey="value"
                 stroke="#93c5fd"
                 strokeWidth={2}
-                dot={{ r: 4 }}
+                dot={{ r: 3 }}
               />
               
               {renderReferencePoints()}
             </LineChart>
           </ResponsiveContainer>
-          
-          {/* Popup labels for highlighted points */}
-          <div className="relative">
-            <div className="absolute top-[-230px] left-[61%] bg-white p-2 border border-gray-200 shadow-md rounded text-xs">
-              <div className="font-medium">Sept 2024</div>
-              <div>Shipment Value: $5.9M</div>
-            </div>
-            
-            <div className="absolute top-[-120px] left-[32%] bg-white p-2 border border-gray-200 shadow-md rounded text-xs">
-              <div className="font-medium">May 2024</div>
-              <div>No of Shipments: 8</div>
-            </div>
-          </div>
         </div>
       ) : (
         <ShipmentsTable />

@@ -2,15 +2,16 @@
 import { Card } from "@/components/ui/card";
 import { useQuery } from "@tanstack/react-query";
 import { fetchSupplyChainData } from "@/api/mockData";
+import { Diamond } from "lucide-react";
 
 const RatingBar = ({ rating, maxRating }: { rating: number; maxRating: number }) => {
   return (
     <div className="flex items-center">
       {[...Array(maxRating)].map((_, i) => (
-        <div
+        <Diamond
           key={i}
-          className={`h-4 w-4 rounded-full mr-1 ${
-            rating > i ? "bg-blue-500" : "bg-gray-200"
+          className={`h-3 w-3 mr-1 ${
+            rating > i ? "text-blue-500" : "text-gray-200"
           }`}
         />
       ))}
@@ -32,23 +33,23 @@ const ComparisonRow = ({
   maxRating: number;
 }) => {
   return (
-    <div className="mb-4">
-      <div className="mb-1 font-medium">{label}</div>
-      <div className="flex items-center mb-2">
-        <span className="text-sm font-medium mr-4">{yourValue}</span>
-        <span className="text-gray-500 text-sm mx-2">vs</span>
-        <span className="text-sm font-medium ml-4">{theirValue}</span>
+    <div className="mb-3">
+      <div className="mb-1 text-sm font-medium">{label}</div>
+      <div className="flex items-center mb-1 text-xs">
+        <span className="font-medium mr-3">{yourValue}</span>
+        <span className="text-gray-500 mx-1">vs</span>
+        <span className="font-medium ml-3">{theirValue}</span>
       </div>
       
       <div className="flex items-center justify-between">
-        <div className="w-full h-3 bg-gray-200 rounded-full overflow-hidden">
+        <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden mr-2">
           <div className="flex h-full w-full">
             <div className="h-full w-1/3 bg-blue-500 rounded-l-full"></div>
             <div className="h-full w-2/3 bg-yellow-400 rounded-r-full"></div>
           </div>
         </div>
         
-        <div className="ml-4">
+        <div className="ml-2">
           <RatingBar rating={rating} maxRating={maxRating} />
         </div>
       </div>
@@ -63,12 +64,12 @@ const SupplyChainAnalytics = () => {
   });
 
   if (isLoading) {
-    return <div className="animate-pulse bg-gray-200 h-64 rounded-md mb-6"></div>;
+    return <div className="animate-pulse bg-gray-200 h-48 rounded-md mb-4"></div>;
   }
 
   return (
-    <Card className="p-6 mb-6">
-      <h2 className="text-xl font-semibold mb-4">Supply Chain Analytics</h2>
+    <Card className="p-4 mb-4 shadow-sm">
+      <h2 className="text-sm font-semibold mb-3">Supply Chain Analytics</h2>
       
       <ComparisonRow
         label="Capacity"

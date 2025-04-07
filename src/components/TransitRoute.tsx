@@ -2,7 +2,7 @@
 import { Card } from "@/components/ui/card";
 import { useQuery } from "@tanstack/react-query";
 import { fetchTransitRoutes } from "@/api/mockData";
-import { MapPin, Circle } from "lucide-react";
+import { MapPin } from "lucide-react";
 
 interface LocationProps {
   name: string;
@@ -13,19 +13,19 @@ interface LocationProps {
 
 const Location = ({ name, country, type, color = "blue" }: LocationProps) => {
   const colorClasses = {
-    blue: "text-blue-500 bg-blue-100",
-    yellow: "text-yellow-600 bg-yellow-100",
+    blue: "text-blue-500 bg-blue-50",
+    yellow: "text-yellow-600 bg-yellow-50",
   };
 
   return (
     <div className="flex flex-col items-center">
-      <div className={`${colorClasses[color as keyof typeof colorClasses]} p-2 rounded-full mb-1`}>
-        <MapPin className="h-5 w-5" />
+      <div className={`${colorClasses[color as keyof typeof colorClasses]} p-1 rounded-full mb-1`}>
+        <MapPin className="h-4 w-4" />
       </div>
       <div className="text-center">
-        <div className="font-medium">{name}</div>
-        <div className="text-sm text-gray-600">{country}</div>
-        <div className="text-xs text-gray-500">{type}</div>
+        <div className="text-xs font-medium">{name}</div>
+        <div className="text-xxs text-gray-600">{country}</div>
+        <div className="text-xxs text-gray-500">{type}</div>
       </div>
     </div>
   );
@@ -48,18 +48,18 @@ const RouteDetails = ({
   };
 
   return (
-    <div className="grid grid-cols-3 gap-2 text-center">
+    <div className="grid grid-cols-3 gap-1 text-center">
       <div>
         <div className="text-xs text-gray-500">Distance</div>
-        <div className={`font-medium ${colorClasses[color as keyof typeof colorClasses]}`}>{distance}</div>
+        <div className={`text-xs font-medium ${colorClasses[color as keyof typeof colorClasses]}`}>{distance}</div>
       </div>
       <div>
         <div className="text-xs text-gray-500">Estimated Time</div>
-        <div className={`font-medium ${colorClasses[color as keyof typeof colorClasses]}`}>{estimatedTime}</div>
+        <div className={`text-xs font-medium ${colorClasses[color as keyof typeof colorClasses]}`}>{estimatedTime}</div>
       </div>
       <div>
-        <div className="text-xs text-gray-500">Mode of Transport</div>
-        <div className={`font-medium ${colorClasses[color as keyof typeof colorClasses]}`}>{transportMode}</div>
+        <div className="text-xs text-gray-500">Mode</div>
+        <div className={`text-xs font-medium ${colorClasses[color as keyof typeof colorClasses]}`}>{transportMode}</div>
       </div>
     </div>
   );
@@ -67,8 +67,8 @@ const RouteDetails = ({
 
 const Route = ({ route }: { route: any }) => {
   return (
-    <div className="mb-4">
-      <div className="flex justify-between items-center mb-4">
+    <div className="mb-3">
+      <div className="flex justify-between items-center mb-2">
         <Location
           name={route.origin.name}
           country={route.origin.country}
@@ -76,11 +76,8 @@ const Route = ({ route }: { route: any }) => {
           color={route.color}
         />
         
-        <div className="flex-1 mx-4 relative h-4 flex items-center justify-center">
-          <div className={`h-0.5 w-full ${route.color === "blue" ? "bg-blue-200" : "bg-yellow-200"}`}></div>
-          <div className="absolute">
-            <Circle className={`h-4 w-4 ${route.color === "blue" ? "text-blue-500" : "text-yellow-500"}`} />
-          </div>
+        <div className="flex-1 mx-3 relative">
+          <div className={`h-px w-full ${route.color === "blue" ? "border-t-2 border-dashed border-blue-200" : "border-t-2 border-dashed border-yellow-200"}`}></div>
         </div>
         
         <Location
@@ -108,14 +105,14 @@ const TransitRoute = () => {
   });
 
   if (isLoading) {
-    return <div className="animate-pulse bg-gray-200 h-64 rounded-md mb-6"></div>;
+    return <div className="animate-pulse bg-gray-200 h-48 rounded-md mb-4"></div>;
   }
 
   return (
-    <Card className="p-6 mb-6">
-      <h2 className="text-xl font-semibold mb-4">Transit Route</h2>
+    <Card className="p-4 mb-4 shadow-sm">
+      <h2 className="text-sm font-semibold mb-3">Transit Route</h2>
       
-      <div className="border-b pb-4 mb-4">
+      <div>
         {routes?.map((route: any, index: number) => (
           <Route key={index} route={route} />
         ))}

@@ -8,6 +8,13 @@ import PerformanceOverview from "@/components/PerformanceOverview";
 import SupplyChainAnalytics from "@/components/SupplyChainAnalytics";
 import TransitRoute from "@/components/TransitRoute";
 import PerformanceGraph from "@/components/PerformanceGraph";
+import ProductVariation from "@/components/ProductVariation";
+import VolumeTrend from "@/components/VolumeTrend";
+import GrowthComparison from "@/components/GrowthComparison";
+import ImportMarkets from "@/components/ImportMarkets";
+import Suppliers from "@/components/Suppliers";
+import ProductFlow from "@/components/ProductFlow";
+import SupplierDetail from "@/components/SupplierDetail";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { TooltipProvider } from "@/components/ui/tooltip";
 
@@ -37,6 +44,17 @@ const Dashboard = () => {
         </div>
         
         <PerformanceGraph />
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+          <ProductVariation />
+          <VolumeTrend />
+        </div>
+        
+        <GrowthComparison />
+        <ImportMarkets />
+        <Suppliers />
+        <ProductFlow />
+        <SupplierDetail />
       </div>
     </div>
   );

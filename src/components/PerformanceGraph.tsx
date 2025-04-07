@@ -163,6 +163,38 @@ const PerformanceGraph = () => {
     return <div className="animate-pulse bg-gray-200 h-96 rounded-md"></div>;
   }
 
+  // Fixed reference dot placement - using indexes instead of trying to access exact positions
+  const renderReferencePoints = () => {
+    if (!data?.highlights || !data.monthlyData) return null;
+    
+    return data.highlights.map((highlight: any, index: number) => {
+      // Get the actual month index from the data
+      const monthIndex = data.monthlyData.findIndex((item: any) => 
+        item.month === highlight.month.substring(0, 3)
+      );
+      
+      // Skip if month not found
+      if (monthIndex === -1) return null;
+      
+      // Get the Y value based on what's available
+      const yValue = highlight.shipmentValue 
+        ? data.monthlyData[monthIndex].value 
+        : data.monthlyData[monthIndex].shipments;
+      
+      return (
+        <ReferenceDot
+          key={index}
+          x={data.monthlyData[monthIndex].month}
+          y={yValue}
+          r={6}
+          fill="#3b82f6"
+          stroke="white"
+          yAxisId={highlight.shipmentValue ? "right" : "left"}
+        />
+      );
+    });
+  };
+
   return (
     <Card className="p-6">
       <div className="flex justify-between items-center mb-4">
@@ -239,16 +271,7 @@ const PerformanceGraph = () => {
                 dot={{ r: 4 }}
               />
               
-              {data?.highlights.map((highlight: any, index: number) => (
-                <ReferenceDot
-                  key={index}
-                  x={highlight.xPos}
-                  y={highlight.shipmentValue ? parseFloat(highlight.shipmentValue.replace("$", "").replace("M", "")) : highlight.numShipments}
-                  r={6}
-                  fill="#3b82f6"
-                  stroke="white"
-                />
-              ))}
+              {renderReferencePoints()}
             </LineChart>
           </ResponsiveContainer>
           

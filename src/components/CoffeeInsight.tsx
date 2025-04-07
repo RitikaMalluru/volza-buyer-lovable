@@ -1,6 +1,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { fetchCoffeeInfo } from "@/api/mockData";
+import { Card } from "@/components/ui/card";
 
 const CoffeeInsight = () => {
   const { data: coffee, isLoading } = useQuery({
@@ -13,7 +14,7 @@ const CoffeeInsight = () => {
   }
 
   return (
-    <div className="bg-blue-50 rounded-lg p-4 mb-6">
+    <Card className="bg-blue-50 p-4 mb-6">
       <div className="flex items-center mb-2">
         <h2 className="text-xl font-semibold">{coffee?.title}</h2>
         <span className="ml-2 text-blue-500">✧</span>
@@ -22,7 +23,7 @@ const CoffeeInsight = () => {
       <p className="text-gray-700">
         {coffee?.description}
       </p>
-    </div>
+    </Card>
   );
 };
 

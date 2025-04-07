@@ -147,14 +147,12 @@ export const performanceData = {
   ],
   highlights: [
     {
-      month: "Sept 2024",
-      shipmentValue: "$5.9M",
-      xPos: 8
+      month: "Sep 2024",
+      shipmentValue: "$5.9M"
     },
     {
       month: "May 2024",
-      numShipments: "8",
-      xPos: 4
+      numShipments: "8"
     }
   ]
 };

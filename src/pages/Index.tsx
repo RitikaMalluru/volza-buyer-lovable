@@ -1,13 +1,51 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+
+import { useState, useEffect } from "react";
+import Header from "@/components/Header";
+import Breadcrumb from "@/components/Breadcrumb";
+import CompanyOverview from "@/components/CompanyOverview";
+import CoffeeInsight from "@/components/CoffeeInsight";
+import PerformanceOverview from "@/components/PerformanceOverview";
+import SupplyChainAnalytics from "@/components/SupplyChainAnalytics";
+import TransitRoute from "@/components/TransitRoute";
+import PerformanceGraph from "@/components/PerformanceGraph";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+const queryClient = new QueryClient();
+
+const Dashboard = () => {
+  return (
+    <div className="bg-gray-50 min-h-screen">
+      <Header />
+      
+      <div className="max-w-7xl mx-auto px-4 py-6">
+        <Breadcrumb 
+          items={[
+            { label: "Home", href: "/" },
+            { label: "Global Companies", href: "/companies" },
+          ]}
+          currentItem="ANYOLI SDNBHD"
+        />
+        
+        <CompanyOverview />
+        <CoffeeInsight />
+        <PerformanceOverview />
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+          <SupplyChainAnalytics />
+          <TransitRoute />
+        </div>
+        
+        <PerformanceGraph />
+      </div>
+    </div>
+  );
+};
 
 const Index = () => {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-gray-600">Start building your amazing project here!</p>
-      </div>
-    </div>
+    <QueryClientProvider client={queryClient}>
+      <Dashboard />
+    </QueryClientProvider>
   );
 };
 

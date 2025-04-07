@@ -15,10 +15,10 @@ const queryClient = new QueryClient();
 
 const Dashboard = () => {
   return (
-    <div className="bg-gradient-light min-h-screen font-sans">
+    <div className="bg-gradient-to-br from-blue-50 to-white min-h-screen font-sans">
       <Header />
       
-      <div className="max-w-7xl mx-auto px-5 py-4">
+      <div className="max-w-7xl mx-auto px-4 py-3">
         <Breadcrumb 
           items={[
             { label: "Home", href: "/" },
@@ -31,7 +31,7 @@ const Dashboard = () => {
         <CoffeeInsight />
         <PerformanceOverview />
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
           <SupplyChainAnalytics />
           <TransitRoute />
         </div>

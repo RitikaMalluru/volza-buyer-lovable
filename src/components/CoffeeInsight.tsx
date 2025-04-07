@@ -14,13 +14,13 @@ const CoffeeInsight = () => {
   }
 
   return (
-    <Card className="bg-blue-50 p-3 mb-4 shadow-sm">
-      <div className="flex items-center mb-1">
-        <h2 className="text-lg font-semibold">{coffee?.title}</h2>
+    <Card className="bg-gradient-to-r from-blue-50 to-blue-100 p-5 mb-6 shadow-sm">
+      <div className="flex items-center mb-3">
+        <h2 className="text-xl font-semibold">{coffee?.title}</h2>
         <span className="ml-2 text-blue-500">✧</span>
       </div>
       
-      <p className="text-gray-700 text-sm">
+      <p className="text-gray-700 text-sm leading-relaxed">
         {coffee?.description}
       </p>
     </Card>

@@ -22,23 +22,20 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
-    // Identify which line the user is hovering on
-    const isValueLine = payload[0]?.dataKey === 'value';
-    const isShipmentLine = payload[0]?.dataKey === 'shipments';
+    // Only show info for the dataKey we're hovering over
+    const dataPoint = payload[0];
     
     return (
       <div className="bg-white p-3 border border-gray-200 shadow-md rounded-md text-xs">
         <p className="font-medium mb-1">{label}</p>
-        {payload.map((entry: any) => (
-          <div key={entry.dataKey}>
-            {entry.dataKey === 'shipments' && (
-              <p className="text-blue-600">Shipments: {entry.value}</p>
-            )}
-            {entry.dataKey === 'value' && (
-              <p className="text-blue-400">Value: ${entry.value}M</p>
-            )}
-          </div>
-        ))}
+        <div>
+          {dataPoint.dataKey === 'shipments' && (
+            <p className="text-blue-600">Shipments: {dataPoint.value}</p>
+          )}
+          {dataPoint.dataKey === 'value' && (
+            <p className="text-blue-400">Value: ${dataPoint.value}M</p>
+          )}
+        </div>
       </div>
     );
   }
@@ -175,38 +172,6 @@ const PerformanceGraph = () => {
     return <div className="animate-pulse bg-gray-200 h-64 rounded-md"></div>;
   }
 
-  // Fixed reference dot placement - using indexes instead of trying to access exact positions
-  const renderReferencePoints = () => {
-    if (!data?.highlights || !data.monthlyData) return null;
-    
-    return data.highlights.map((highlight: any, index: number) => {
-      // Get the actual month index from the data
-      const monthIndex = data.monthlyData.findIndex((item: any) => 
-        item.month === highlight.month.substring(0, 3)
-      );
-      
-      // Skip if month not found
-      if (monthIndex === -1) return null;
-      
-      // Get the Y value based on what's available
-      const yValue = highlight.shipmentValue 
-        ? data.monthlyData[monthIndex].value 
-        : data.monthlyData[monthIndex].shipments;
-      
-      return (
-        <ReferenceDot
-          key={index}
-          x={data.monthlyData[monthIndex].month}
-          y={yValue}
-          r={6}
-          fill="#3b82f6"
-          stroke="white"
-          yAxisId={highlight.shipmentValue ? "right" : "left"}
-        />
-      );
-    });
-  };
-
   return (
     <Card className="p-4 shadow-sm">
       <div className="flex justify-between items-center mb-3">
@@ -283,8 +248,6 @@ const PerformanceGraph = () => {
                 strokeWidth={2}
                 dot={{ r: 3 }}
               />
-              
-              {renderReferencePoints()}
             </LineChart>
           </ResponsiveContainer>
         </div>

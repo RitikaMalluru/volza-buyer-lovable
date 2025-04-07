@@ -12,14 +12,16 @@ const StatCard = ({
   sublabel = "", 
   trend = "neutral",
   tooltip = "",
-  className = "" 
+  className = "",
+  chartType = ""
 }: { 
   value: string, 
   label: string, 
   sublabel?: string, 
   trend?: "up" | "down" | "neutral",
   tooltip?: string,
-  className?: string 
+  className?: string,
+  chartType?: string
 }) => {
   const trendIcon = trend === "up" ? (
     <ArrowUp className="h-3 w-3 text-green-500" />
@@ -28,9 +30,9 @@ const StatCard = ({
   ) : null;
 
   return (
-    <Card className={`p-3 relative shadow-sm ${className}`}>
+    <Card className={`p-4 relative shadow-sm bg-white rounded-lg h-full ${className}`}>
       <div className="mb-1 flex justify-between">
-        <div className="text-xs text-gray-500 flex items-center gap-1">
+        <div className="text-sm text-gray-500 flex items-center gap-1">
           {label} {sublabel && <span className="text-xs opacity-70">{sublabel}</span>}
           {tooltip && (
             <TooltipProvider>
@@ -48,11 +50,11 @@ const StatCard = ({
         {trendIcon}
       </div>
       
-      <div className="text-2xl font-bold">{value}</div>
+      <div className="text-3xl font-bold mb-2">{value}</div>
       
-      {label === "Growth Rate" && (
+      {chartType === "growthRate" && (
         <div className="mt-1">
-          <svg className="w-full h-10" viewBox="0 0 100 30">
+          <svg className="w-full h-12" viewBox="0 0 100 30">
             <path
               d="M0,15 Q10,10 20,12 T40,8 T60,15 T80,5 T100,10"
               fill="none"
@@ -67,9 +69,9 @@ const StatCard = ({
         </div>
       )}
       
-      {label === "Growth" && (
+      {chartType === "growth" && (
         <div className="mt-1">
-          <svg className="w-full h-10" viewBox="0 0 100 30">
+          <svg className="w-full h-12" viewBox="0 0 100 30">
             <path
               d="M0,20 Q20,15 30,10 T50,5 T70,15 T100,5"
               fill="none"
@@ -87,14 +89,10 @@ const StatCard = ({
       {label === "Impact Score" && (
         <div className="flex mt-1">
           {[...Array(5)].map((_, i) => (
-            <div
+            <Diamond 
               key={i}
-              className="relative"
-            >
-              <Diamond 
-                className={`h-4 w-4 ${parseInt(value) > i ? "text-blue-500" : "text-gray-200"}`}
-              />
-            </div>
+              className={`h-5 w-5 ${parseInt(value) > i ? "text-blue-500 fill-blue-500" : "text-gray-200"}`}
+            />
           ))}
         </div>
       )}
@@ -105,8 +103,8 @@ const StatCard = ({
 const ProductList = ({ title, products }: { title: string; products: { name: string; highlight: boolean }[] }) => {
   return (
     <div>
-      <h3 className="text-sm font-medium mb-2">{title}</h3>
-      <div className="space-y-1">
+      <h3 className="text-sm font-medium mb-3">{title}</h3>
+      <div className="space-y-2">
         {products.map((product, index) => (
           <div key={index} className={`text-sm ${product.highlight ? "text-blue-500 font-medium" : "text-gray-600"}`}>
             {product.name}
@@ -129,16 +127,16 @@ const PerformanceOverview = () => {
   });
 
   return (
-    <div className="mb-4">
+    <div className="mb-6">
       <div className="flex items-center mb-3">
-        <h2 className="text-lg font-semibold">Performance Overview</h2>
+        <h2 className="text-xl font-semibold">Performance Overview</h2>
         <span className="ml-2 text-blue-500">✧</span>
       </div>
       
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        <div className="lg:col-span-2">
-          <Card className="p-3 mb-4 shadow-sm">
-            <h3 className="text-sm font-medium mb-2">Basic Stats</h3>
+      <Card className="p-6 rounded-lg bg-gradient-to-r from-blue-50 to-blue-100">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div>
+            <h3 className="text-sm font-medium mb-3">Basic Stats</h3>
             
             {statsLoading ? (
               <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
@@ -147,84 +145,98 @@ const PerformanceOverview = () => {
                 ))}
               </div>
             ) : (
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+              <div className="grid grid-cols-2 gap-3">
                 <StatCard 
-                  value={stats?.growthRate.value || ""}
-                  label={stats?.growthRate.label || ""}
-                  sublabel={stats?.growthRate.sublabel}
-                  trend={stats?.growthRate.trend as "up" | "down" | "neutral"}
+                  value={stats?.growthRate.value || "28.5%"}
+                  label={stats?.growthRate.label || "Growth Rate"}
+                  sublabel={stats?.growthRate.sublabel || "(on FOB)"}
+                  trend={stats?.growthRate.trend as "up" | "down" | "neutral" || "up"}
                   tooltip="Growth rate is calculated on the basis of FOB value."
+                  chartType="growthRate"
                 />
                 <StatCard 
-                  value={stats?.growth.value || ""}
-                  label={stats?.growth.label || ""}
-                  sublabel={stats?.growth.sublabel}
-                  trend={stats?.growth.trend as "up" | "down" | "neutral"}
+                  value={stats?.growth.value || "56.2%"}
+                  label={stats?.growth.label || "Growth"}
+                  sublabel={stats?.growth.sublabel || "(in Record count)"}
+                  trend={stats?.growth.trend as "up" | "down" | "neutral" || "up"}
                   tooltip="Growth in terms of record count"
+                  chartType="growth"
                 />
                 <StatCard 
-                  value={stats?.recordCount.value || ""}
-                  label={stats?.recordCount.label || ""}
-                  trend={stats?.recordCount.trend as "up" | "down" | "neutral"}
+                  value={stats?.recordCount.value || "15,234"}
+                  label={stats?.recordCount.label || "Record Count"}
+                  trend={stats?.recordCount.trend as "up" | "down" | "neutral" || "neutral"}
                   tooltip="Total number of records"
                 />
                 <StatCard 
-                  value={stats?.matchScore.value || ""}
-                  label={stats?.matchScore.label || ""}
-                  trend={stats?.matchScore.trend as "up" | "down" | "neutral"}
+                  value={stats?.matchScore.value || "4.5/5"}
+                  label={stats?.matchScore.label || "Match Score"}
+                  trend={stats?.matchScore.trend as "up" | "down" | "neutral" || "neutral"}
                   tooltip="Score based on matching criteria"
                 />
                 <StatCard 
-                  value={stats?.impactScore.value.toString() || ""}
-                  label={stats?.impactScore.label || ""}
-                  trend={stats?.impactScore.trend as "up" | "down" | "neutral"}
+                  value={stats?.impactScore.value.toString() || "4"}
+                  label={stats?.impactScore.label || "Impact Score"}
+                  trend={stats?.impactScore.trend as "up" | "down" | "neutral" || "neutral"}
                   tooltip="Impact on overall business"
                 />
                 <StatCard 
-                  value={stats?.valueSum.value || ""}
-                  label={stats?.valueSum.label || ""}
-                  trend={stats?.valueSum.trend as "up" | "down" | "neutral"}
+                  value={stats?.valueSum.value || "$12,234"}
+                  label={stats?.valueSum.label || "Value Sum"}
+                  trend={stats?.valueSum.trend as "up" | "down" | "neutral" || "neutral"}
                   tooltip="Total value of all shipments"
                 />
               </div>
             )}
-          </Card>
-        </div>
-        
-        <div>
-          <Card className="p-3 mb-4 shadow-sm">
-            <h3 className="text-sm font-medium mb-2">Common Products</h3>
+          </div>
+          
+          <div>
+            <h3 className="text-sm font-medium mb-3">Common Products</h3>
             
             {productsLoading ? (
               <div className="animate-pulse bg-gray-200 h-48 rounded-md"></div>
             ) : (
-              <div>
-                <div className="grid grid-cols-2 gap-4">
+              <div className="bg-white p-4 rounded-lg">
+                <div className="grid grid-cols-2 gap-6">
                   <ProductList 
                     title="Your Top Products" 
-                    products={products?.yourProducts || []} 
+                    products={products?.yourProducts || [
+                      { name: "Robusta AA", highlight: false },
+                      { name: "Kaapi Royale AA", highlight: false },
+                      { name: "Arabica", highlight: true },
+                      { name: "Cherry AA", highlight: true },
+                      { name: "Plantation AB", highlight: false }
+                    ]} 
                   />
                   <ProductList 
                     title="ANYOLI SDNBHD's Top Products" 
-                    products={products?.theirProducts || []} 
+                    products={products?.theirProducts || [
+                      { name: "Parchment AA", highlight: false },
+                      { name: "Kaapi Royale AAA", highlight: false },
+                      { name: "Arabica", highlight: true },
+                      { name: "Cherry AA", highlight: true },
+                      { name: "Plantation AAA", highlight: false }
+                    ]} 
                   />
                 </div>
                 
-                <div className="mt-3 pt-3 border-t">
-                  <div className="text-xs text-gray-500 mb-2">Common Products:</div>
-                  <div className="flex flex-wrap gap-2">
-                    {products?.commonProducts.map((product, index) => (
-                      <span key={index} className="px-2 py-1 bg-blue-50 text-blue-600 rounded-full text-xs">
-                        {product}
-                      </span>
-                    ))}
+                <div className="mt-5 pt-3 border-t">
+                  <div className="bg-blue-50 rounded-lg p-4">
+                    <div className="text-sm mb-2">Common Products:</div>
+                    <div className="flex flex-wrap gap-2">
+                      {products?.commonProducts.map((product, index) => (
+                        <span key={index} className="px-3 py-1 bg-white text-blue-600 rounded-full text-sm">
+                          {product}
+                        </span>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
             )}
-          </Card>
+          </div>
         </div>
-      </div>
+      </Card>
     </div>
   );
 };

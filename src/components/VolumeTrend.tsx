@@ -1,6 +1,8 @@
 
 import { useState } from "react";
 import { Card } from "@/components/ui/card";
+import { useQuery } from "@tanstack/react-query";
+import { fetchVolumeTrendData } from "@/api/mockData";
 import {
   AreaChart,
   Area,
@@ -11,8 +13,6 @@ import {
   ResponsiveContainer,
   ReferenceDot
 } from "recharts";
-import { ChevronDown } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import {
   Select,
   SelectContent,
@@ -21,62 +21,73 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-const data = [
-  { month: "Jan", volume: 5500 },
-  { month: "Feb", volume: 6000 },
-  { month: "Mar", volume: 3000 },
-  { month: "Apr", volume: 2000 },
-  { month: "May", volume: 3500 },
-  { month: "Jun", volume: 2300 },
-  { month: "Jul", volume: 4600 },
-  { month: "Aug", volume: 1500 },
-  { month: "Sep", volume: 3500 },
-  { month: "Oct", volume: 4100 },
-  { month: "Nov", volume: 3800 },
-  { month: "Dec", volume: 6200 }
-];
-
-const CustomTooltip = ({ active, payload, label }: any) => {
-  if (active && payload && payload.length) {
-    return (
-      <div className="bg-white p-3 border border-gray-200 shadow-md rounded-md text-xs">
-        <p className="font-medium mb-1">{label}</p>
-        <p className="text-blue-600">Volume: {payload[0].value.toLocaleString()} KGS</p>
-      </div>
-    );
-  }
-  return null;
-};
-
 const VolumeTrend = () => {
+  const { data, isLoading } = useQuery({
+    queryKey: ["volumeTrendData"],
+    queryFn: fetchVolumeTrendData,
+  });
+
   const [unit, setUnit] = useState("KGS");
   const [tooltipInfo, setTooltipInfo] = useState({
     visible: true,
     month: "July",
-    value: "4.6K Kgs"
+    value: "4.6K"
   });
+
+  if (isLoading) {
+    return <div className="animate-pulse bg-gray-200 h-48 rounded-md mb-4"></div>;
+  }
+
+  const chartData = data?.data[unit] || [];
+  const units = data?.units || [];
+
+  const formatVolume = (value: number) => {
+    if (unit === "KGS") {
+      return value >= 1000 ? `${(value / 1000).toFixed(1)}K` : value.toString();
+    } else if (unit === "Tons") {
+      return value.toFixed(1);
+    } else if (unit === "Pounds") {
+      return value >= 1000 ? `${(value / 1000).toFixed(1)}K` : value.toString();
+    }
+    return value.toString();
+  };
+
+  const CustomTooltip = ({ active, payload, label }: any) => {
+    if (active && payload && payload.length) {
+      const volumeValue = payload[0].value;
+      return (
+        <div className="bg-white p-3 border border-gray-200 shadow-md rounded-md text-xs">
+          <p className="font-medium mb-1">{label}</p>
+          <p className="text-blue-600">Volume: {formatVolume(volumeValue)} {unit}</p>
+        </div>
+      );
+    }
+    return null;
+  };
 
   return (
     <Card className="p-5 shadow-sm bg-white mb-6">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-semibold">Volume Trend</h2>
         
-        <Select defaultValue="KGS" onValueChange={setUnit}>
+        <Select defaultValue={unit} onValueChange={setUnit}>
           <SelectTrigger className="w-[100px] h-8 text-xs border-blue-500 text-blue-500">
-            <SelectValue placeholder="KGS" />
+            <SelectValue placeholder={unit} />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="KGS">KGS</SelectItem>
-            <SelectItem value="Tons">Tons</SelectItem>
-            <SelectItem value="Pounds">Pounds</SelectItem>
+            {units.map((unitOption: { value: string, label: string }) => (
+              <SelectItem key={unitOption.value} value={unitOption.value}>
+                {unitOption.label}
+              </SelectItem>
+            ))}
           </SelectContent>
         </Select>
       </div>
       
-      <div className="h-[350px] relative">
+      <div className="h-[300px] relative">
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart
-            data={data}
+            data={chartData}
             margin={{ top: 20, right: 30, left: 20, bottom: 10 }}
           >
             <defs>
@@ -98,8 +109,7 @@ const VolumeTrend = () => {
               tickLine={false}
               tick={{ fontSize: 11 }}
               label={{ value: `Volume (${unit})`, angle: -90, position: 'insideLeft', fontSize: 11 }}
-              domain={[0, 12000]}
-              ticks={[0, 2000, 4000, 6000, 8000, 10000, 12000]}
+              domain={unit === "Tons" ? [0, 12] : unit === "Pounds" ? [0, 15000] : [0, 8000]}
             />
             <Tooltip content={<CustomTooltip />} />
             
@@ -117,7 +127,7 @@ const VolumeTrend = () => {
             {tooltipInfo.visible && (
               <ReferenceDot
                 x="Jul"
-                y={4600}
+                y={chartData.find((item: any) => item.month === "Jul")?.volume || 0}
                 r={6}
                 fill="#fff"
                 stroke="#3b82f6"
@@ -130,8 +140,8 @@ const VolumeTrend = () => {
         {tooltipInfo.visible && (
           <div className="absolute pointer-events-none text-xs bg-white border border-gray-200 shadow-md rounded-md p-3" style={{top: '25%', right: '35%'}}>
             <p className="font-medium">Volume Trend in</p>
-            <p className="font-medium">the month of</p>
-            <p className="font-medium">{tooltipInfo.month} is {tooltipInfo.value}</p>
+            <p className="font-medium">the month of {tooltipInfo.month}</p>
+            <p className="font-medium">is {formatVolume(chartData.find((item: any) => item.month === "Jul")?.volume || 0)} {unit}</p>
           </div>
         )}
       </div>

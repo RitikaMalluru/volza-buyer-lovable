@@ -176,6 +176,277 @@ export const shipmentsTableData = {
   ]
 };
 
+// Product variation data
+export const productVariationData = {
+  categories: [
+    { id: "budget", label: "Budget" },
+    { id: "mid-range", label: "Mid-Range" },
+    { id: "premium", label: "Premium" },
+    { id: "custom", label: "Custom" }
+  ],
+  data: {
+    budget: [
+      { month: "Jan", instant: 23, robusta: 16, flavoured: 12 },
+      { month: "Feb", instant: 22, robusta: 14, flavoured: 10 },
+      { month: "Mar", instant: 18, robusta: 11, flavoured: 6 },
+      { month: "Apr", instant: 15, robusta: 8, flavoured: 3 },
+      { month: "May", instant: 17, robusta: 11, flavoured: 7 },
+      { month: "Jun", instant: 15, robusta: 8, flavoured: 5 },
+      { month: "Jul", instant: 20, robusta: 14, flavoured: 10 },
+      { month: "Aug", instant: 24, robusta: 15, flavoured: 7 },
+      { month: "Sep", instant: 18, robusta: 15, flavoured: 9 },
+      { month: "Oct", instant: 19, robusta: 18, flavoured: 8 },
+      { month: "Nov", instant: 20, robusta: 13, flavoured: 10 },
+      { month: "Dec", instant: 18, robusta: 14, flavoured: 12 }
+    ],
+    "mid-range": [
+      { month: "Jan", instant: 28, robusta: 20, flavoured: 15 },
+      { month: "Feb", instant: 26, robusta: 18, flavoured: 14 },
+      { month: "Mar", instant: 22, robusta: 15, flavoured: 10 },
+      { month: "Apr", instant: 19, robusta: 12, flavoured: 8 },
+      { month: "May", instant: 21, robusta: 15, flavoured: 11 },
+      { month: "Jun", instant: 20, robusta: 13, flavoured: 9 },
+      { month: "Jul", instant: 25, robusta: 18, flavoured: 14 },
+      { month: "Aug", instant: 28, robusta: 19, flavoured: 12 },
+      { month: "Sep", instant: 23, robusta: 20, flavoured: 14 },
+      { month: "Oct", instant: 24, robusta: 22, flavoured: 12 },
+      { month: "Nov", instant: 25, robusta: 18, flavoured: 15 },
+      { month: "Dec", instant: 22, robusta: 19, flavoured: 17 }
+    ],
+    premium: [
+      { month: "Jan", instant: 35, robusta: 28, flavoured: 22 },
+      { month: "Feb", instant: 33, robusta: 26, flavoured: 20 },
+      { month: "Mar", instant: 30, robusta: 23, flavoured: 18 },
+      { month: "Apr", instant: 28, robusta: 21, flavoured: 15 },
+      { month: "May", instant: 29, robusta: 24, flavoured: 19 },
+      { month: "Jun", instant: 27, robusta: 22, flavoured: 16 },
+      { month: "Jul", instant: 32, robusta: 26, flavoured: 21 },
+      { month: "Aug", instant: 36, robusta: 28, flavoured: 19 },
+      { month: "Sep", instant: 31, robusta: 27, flavoured: 22 },
+      { month: "Oct", instant: 32, robusta: 30, flavoured: 20 },
+      { month: "Nov", instant: 33, robusta: 25, flavoured: 22 },
+      { month: "Dec", instant: 30, robusta: 26, flavoured: 23 }
+    ],
+    custom: [
+      { month: "Jan", instant: 30, robusta: 22, flavoured: 17 },
+      { month: "Feb", instant: 29, robusta: 20, flavoured: 15 },
+      { month: "Mar", instant: 25, robusta: 17, flavoured: 12 },
+      { month: "Apr", instant: 22, robusta: 14, flavoured: 10 },
+      { month: "May", instant: 24, robusta: 18, flavoured: 13 },
+      { month: "Jun", instant: 23, robusta: 15, flavoured: 11 },
+      { month: "Jul", instant: 27, robusta: 20, flavoured: 16 },
+      { month: "Aug", instant: 32, robusta: 21, flavoured: 14 },
+      { month: "Sep", instant: 26, robusta: 22, flavoured: 17 },
+      { month: "Oct", instant: 28, robusta: 25, flavoured: 15 },
+      { month: "Nov", instant: 29, robusta: 20, flavoured: 18 },
+      { month: "Dec", instant: 26, robusta: 21, flavoured: 19 }
+    ]
+  },
+  tooltipInfo: {
+    visible: true,
+    product: "Instant",
+    month: "Oct",
+    value: "$22.3"
+  }
+};
+
+// Volume trend data
+export const volumeTrendData = {
+  units: [
+    { value: "KGS", label: "KGS" },
+    { value: "Tons", label: "Tons" },
+    { value: "Pounds", label: "Pounds" }
+  ],
+  data: {
+    KGS: [
+      { month: "Jan", volume: 5500 },
+      { month: "Feb", volume: 6000 },
+      { month: "Mar", volume: 3000 },
+      { month: "Apr", volume: 2000 },
+      { month: "May", volume: 3500 },
+      { month: "Jun", volume: 2300 },
+      { month: "Jul", volume: 4600 },
+      { month: "Aug", volume: 1500 },
+      { month: "Sep", volume: 3500 },
+      { month: "Oct", volume: 4100 },
+      { month: "Nov", volume: 3800 },
+      { month: "Dec", volume: 6200 }
+    ],
+    Tons: [
+      { month: "Jan", volume: 5.5 },
+      { month: "Feb", volume: 6.0 },
+      { month: "Mar", volume: 3.0 },
+      { month: "Apr", volume: 2.0 },
+      { month: "May", volume: 3.5 },
+      { month: "Jun", volume: 2.3 },
+      { month: "Jul", volume: 4.6 },
+      { month: "Aug", volume: 1.5 },
+      { month: "Sep", volume: 3.5 },
+      { month: "Oct", volume: 4.1 },
+      { month: "Nov", volume: 3.8 },
+      { month: "Dec", volume: 6.2 }
+    ],
+    Pounds: [
+      { month: "Jan", volume: 12125 },
+      { month: "Feb", volume: 13228 },
+      { month: "Mar", volume: 6614 },
+      { month: "Apr", volume: 4409 },
+      { month: "May", volume: 7716 },
+      { month: "Jun", volume: 5070 },
+      { month: "Jul", volume: 10141 },
+      { month: "Aug", volume: 3307 },
+      { month: "Sep", volume: 7716 },
+      { month: "Oct", volume: 9039 },
+      { month: "Nov", volume: 8378 },
+      { month: "Dec", volume: 13669 }
+    ]
+  },
+  tooltipInfo: {
+    visible: true,
+    month: "July",
+    value: "4.6K"
+  }
+};
+
+// Suppliers data
+export const suppliersData = {
+  suppliers: [
+    {
+      id: 1,
+      name: "IKEA SUPPLY AG",
+      country: "United States",
+      rating: "8.0",
+      comparisons: {
+        unitRate: { you: "$2", supplier: "$2.5", status: "Slightly Lower", percentage: 30 },
+        shipments: { you: "212", supplier: "314", status: "Slightly Higher", percentage: 70 },
+        value: { you: "$1234", supplier: "$1234", status: "Equal", percentage: 50 }
+      }
+    },
+    {
+      id: 2,
+      name: "IKEA SUPPLY AG",
+      country: "United States",
+      rating: "8.0",
+      comparisons: {
+        unitRate: { you: "$2", supplier: "$2.5", status: "Slightly Lower", percentage: 30 },
+        shipments: { you: "212", supplier: "314", status: "Slightly Higher", percentage: 70 },
+        value: { you: "$1234", supplier: "$1234", status: "Equal", percentage: 50 }
+      }
+    },
+    {
+      id: 3,
+      name: "IKEA SUPPLY AG",
+      country: "United States",
+      rating: "8.0",
+      comparisons: {
+        unitRate: { you: "$2", supplier: "$2.5", status: "Slightly Lower", percentage: 30 },
+        shipments: { you: "212", supplier: "314", status: "Slightly Higher", percentage: 70 },
+        value: { you: "$1234", supplier: "$1234", status: "Equal", percentage: 50 }
+      }
+    },
+    {
+      id: 4,
+      name: "IKEA SUPPLY AG",
+      country: "United States",
+      rating: "8.0",
+      comparisons: {
+        unitRate: { you: "$2", supplier: "$2.5", status: "Slightly Lower", percentage: 30 },
+        shipments: { you: "212", supplier: "314", status: "Slightly Higher", percentage: 70 },
+        value: { you: "$1234", supplier: "$1234", status: "Equal", percentage: 50 }
+      }
+    },
+    {
+      id: 5,
+      name: "IKEA SUPPLY AG",
+      country: "United States",
+      rating: "8.0",
+      comparisons: {
+        unitRate: { you: "$2", supplier: "$2.5", status: "Slightly Lower", percentage: 30 },
+        shipments: { you: "212", supplier: "314", status: "Slightly Higher", percentage: 70 },
+        value: { you: "$1234", supplier: "$1234", status: "Equal", percentage: 50 }
+      }
+    },
+    {
+      id: 6,
+      name: "IKEA SUPPLY AG",
+      country: "United States",
+      rating: "8.0",
+      comparisons: {
+        unitRate: { you: "$2", supplier: "$2.5", status: "Slightly Lower", percentage: 30 },
+        shipments: { you: "212", supplier: "314", status: "Slightly Higher", percentage: 70 },
+        value: { you: "$1234", supplier: "$1234", status: "Equal", percentage: 50 }
+      }
+    },
+    {
+      id: 7,
+      name: "IKEA SUPPLY AG",
+      country: "United States",
+      rating: "8.0",
+      comparisons: {
+        unitRate: { you: "$2", supplier: "$2.5", status: "Slightly Lower", percentage: 30 },
+        shipments: { you: "212", supplier: "314", status: "Slightly Higher", percentage: 70 },
+        value: { you: "$1234", supplier: "$1234", status: "Equal", percentage: 50 }
+      }
+    },
+    {
+      id: 8,
+      name: "IKEA SUPPLY AG",
+      country: "United States",
+      rating: "8.0",
+      comparisons: {
+        unitRate: { you: "$2", supplier: "$2.5", status: "Slightly Lower", percentage: 30 },
+        shipments: { you: "212", supplier: "314", status: "Slightly Higher", percentage: 70 },
+        value: { you: "$1234", supplier: "$1234", status: "Equal", percentage: 50 }
+      }
+    },
+    {
+      id: 9,
+      name: "IKEA SUPPLY AG",
+      country: "United States",
+      rating: "8.0",
+      comparisons: {
+        unitRate: { you: "$2", supplier: "$2.5", status: "Slightly Lower", percentage: 30 },
+        shipments: { you: "212", supplier: "314", status: "Slightly Higher", percentage: 70 },
+        value: { you: "$1234", supplier: "$1234", status: "Equal", percentage: 50 }
+      }
+    },
+    {
+      id: 10,
+      name: "IKEA SUPPLY AG",
+      country: "United States",
+      rating: "8.0",
+      comparisons: {
+        unitRate: { you: "$2", supplier: "$2.5", status: "Slightly Lower", percentage: 30 },
+        shipments: { you: "212", supplier: "314", status: "Slightly Higher", percentage: 70 },
+        value: { you: "$1234", supplier: "$1234", status: "Equal", percentage: 50 }
+      }
+    },
+    {
+      id: 11,
+      name: "IKEA SUPPLY AG",
+      country: "United States",
+      rating: "8.0",
+      comparisons: {
+        unitRate: { you: "$2", supplier: "$2.5", status: "Slightly Lower", percentage: 30 },
+        shipments: { you: "212", supplier: "314", status: "Slightly Higher", percentage: 70 },
+        value: { you: "$1234", supplier: "$1234", status: "Equal", percentage: 50 }
+      }
+    },
+    {
+      id: 12,
+      name: "IKEA SUPPLY AG",
+      country: "United States",
+      rating: "8.0",
+      comparisons: {
+        unitRate: { you: "$2", supplier: "$2.5", status: "Slightly Lower", percentage: 30 },
+        shipments: { you: "212", supplier: "314", status: "Slightly Higher", percentage: 70 },
+        value: { you: "$1234", supplier: "$1234", status: "Equal", percentage: 50 }
+      }
+    }
+  ],
+  totalCount: 31
+};
+
 // API service structure
 export const fetchCompanyInfo = async () => {
   // Simulate API delay
@@ -216,4 +487,19 @@ export const fetchPerformanceData = async () => {
 export const fetchShipmentsTableData = async () => {
   await new Promise(resolve => setTimeout(resolve, 300));
   return shipmentsTableData;
+};
+
+export const fetchProductVariationData = async () => {
+  await new Promise(resolve => setTimeout(resolve, 300));
+  return productVariationData;
+};
+
+export const fetchVolumeTrendData = async () => {
+  await new Promise(resolve => setTimeout(resolve, 300));
+  return volumeTrendData;
+};
+
+export const fetchSuppliersData = async () => {
+  await new Promise(resolve => setTimeout(resolve, 300));
+  return suppliersData;
 };

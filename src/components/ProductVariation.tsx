@@ -1,6 +1,8 @@
 
 import { useState } from "react";
 import { Card } from "@/components/ui/card";
+import { useQuery } from "@tanstack/react-query";
+import { fetchProductVariationData } from "@/api/mockData";
 import {
   LineChart,
   Line,
@@ -12,28 +14,6 @@ import {
   ReferenceDot
 } from "recharts";
 import { Button } from "@/components/ui/button";
-
-const data = [
-  { month: "Jan", instant: 23, robusta: 16, flavoured: 12 },
-  { month: "Feb", instant: 22, robusta: 14, flavoured: 10 },
-  { month: "Mar", instant: 18, robusta: 11, flavoured: 6 },
-  { month: "Apr", instant: 15, robusta: 8, flavoured: 3 },
-  { month: "May", instant: 17, robusta: 11, flavoured: 7 },
-  { month: "Jun", instant: 15, robusta: 8, flavoured: 5 },
-  { month: "Jul", instant: 20, robusta: 14, flavoured: 10 },
-  { month: "Aug", instant: 24, robusta: 15, flavoured: 7 },
-  { month: "Sep", instant: 18, robusta: 15, flavoured: 9 },
-  { month: "Oct", instant: 19, robusta: 18, flavoured: 8 },
-  { month: "Nov", instant: 20, robusta: 13, flavoured: 10 },
-  { month: "Dec", instant: 18, robusta: 14, flavoured: 12 }
-];
-
-const categories = [
-  { id: "budget", label: "Budget" },
-  { id: "mid-range", label: "Mid-Range" },
-  { id: "premium", label: "Premium" },
-  { id: "custom", label: "Custom" }
-];
 
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
@@ -52,6 +32,11 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 };
 
 const ProductVariation = () => {
+  const { data, isLoading } = useQuery({
+    queryKey: ["productVariationData"],
+    queryFn: fetchProductVariationData,
+  });
+  
   const [activeCategory, setActiveCategory] = useState("budget");
   const [tooltipInfo, setTooltipInfo] = useState({
     visible: true,
@@ -60,13 +45,20 @@ const ProductVariation = () => {
     value: "$22.3"
   });
 
+  if (isLoading) {
+    return <div className="animate-pulse bg-gray-200 h-48 rounded-md mb-4"></div>;
+  }
+
+  const chartData = data?.data[activeCategory] || [];
+  const categories = data?.categories || [];
+
   return (
     <Card className="p-5 shadow-sm bg-white mb-6">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-semibold">Product Variation <span className="text-gray-500 text-sm font-normal">(by Unit Price)</span></h2>
         
         <div className="flex space-x-2">
-          {categories.map((category) => (
+          {categories.map((category: { id: string, label: string }) => (
             <Button
               key={category.id}
               variant={activeCategory === category.id ? "default" : "outline"}
@@ -79,10 +71,10 @@ const ProductVariation = () => {
         </div>
       </div>
       
-      <div className="h-[350px]">
+      <div className="h-[300px]">
         <ResponsiveContainer width="100%" height="100%">
           <LineChart
-            data={data}
+            data={chartData}
             margin={{ top: 20, right: 30, left: 20, bottom: 10 }}
           >
             <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
@@ -98,8 +90,8 @@ const ProductVariation = () => {
               tickLine={false}
               tick={{ fontSize: 11 }}
               label={{ value: 'Unit Prices in Dollars', angle: -90, position: 'insideLeft', fontSize: 11 }}
-              domain={[0, 30]}
-              ticks={[0, 5, 10, 15, 20, 25, 30]}
+              domain={[0, 40]}
+              ticks={[0, 10, 20, 30, 40]}
             />
             <Tooltip content={<CustomTooltip />} />
             
@@ -134,7 +126,7 @@ const ProductVariation = () => {
             {tooltipInfo.visible && (
               <ReferenceDot
                 x="Oct"
-                y={19}
+                y={chartData.find((item: any) => item.month === "Oct")?.instant || 0}
                 r={6}
                 fill="#fff"
                 stroke="#1e40af"

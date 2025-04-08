@@ -447,9 +447,167 @@ export const suppliersData = {
   totalCount: 31
 };
 
+// Product flow data
+export const productFlowData = {
+  products: [
+    {
+      id: "72042190",
+      suppliers: [
+        {
+          name: "Mukund Ltd.",
+          shipments: "92",
+          value: "$17,32,867"
+        },
+        {
+          name: "Synergy Steels Ltd.",
+          shipments: "78",
+          value: "$12,76,543"
+        },
+        {
+          name: "Jindal Stainless Pvt.",
+          shipments: "63",
+          value: "$9,82,321"
+        }
+      ]
+    },
+    {
+      id: "76012010",
+      suppliers: [
+        {
+          name: "Trijith International Pvt. Ltd.",
+          shipments: "72",
+          value: "$11,43,982"
+        },
+        {
+          name: "CTZ Industries Pvt. Ltd.",
+          shipments: "85",
+          value: "$14,14,867"
+        }
+      ]
+    },
+    {
+      id: "74031900",
+      suppliers: [
+        {
+          name: "Jain recycling Pvt. Ltd.",
+          shipments: "59",
+          value: "$8,27,654"
+        },
+        {
+          name: "Bolon Industries Ltd.",
+          shipments: "64",
+          value: "$10,23,456"
+        },
+        {
+          name: "Jian Metal Rolling Mills",
+          shipments: "71",
+          value: "$11,87,543"
+        }
+      ]
+    },
+    {
+      id: "82049010",
+      suppliers: [
+        {
+          name: "Apex Metalworks Ltd.",
+          shipments: "68",
+          value: "$12,45,876"
+        },
+        {
+          name: "Krishna Industries",
+          shipments: "76",
+          value: "$15,32,456"
+        }
+      ]
+    },
+    {
+      id: "73044190",
+      suppliers: [
+        {
+          name: "Sterling Pipes Pvt. Ltd.",
+          shipments: "83",
+          value: "$18,76,543"
+        },
+        {
+          name: "Vishnu Steel Tubes",
+          shipments: "65",
+          value: "$11,23,457"
+        },
+        {
+          name: "Phoenix Metal Products",
+          shipments: "57",
+          value: "$8,93,210"
+        }
+      ]
+    }
+  ],
+  visibleProducts: 3
+};
+
+// Import markets data
+export const importMarketsData = {
+  countries: [
+    { 
+      name: "India", 
+      shipments: "4,963", 
+      suppliers: "13", 
+      value: "$4,81,12,963",
+      coordinates: [78.9629, 20.5937],
+      code: "IND"
+    },
+    { 
+      name: "China", 
+      shipments: "4,660", 
+      suppliers: "19", 
+      value: "$4,21,14,963",
+      coordinates: [104.1954, 35.8617],
+      code: "CHN"
+    },
+    { 
+      name: "USA", 
+      shipments: "2,963", 
+      suppliers: "13", 
+      value: "$1,21,14,693",
+      coordinates: [-95.7129, 37.0902],
+      code: "USA"
+    },
+    { 
+      name: "Algeria", 
+      shipments: "2,633", 
+      suppliers: "31", 
+      value: "$2,01,14,963",
+      coordinates: [1.6596, 28.0339],
+      code: "DZA"
+    },
+    { 
+      name: "Mexico", 
+      shipments: "1,963", 
+      suppliers: "22", 
+      value: "$3,21,14,962",
+      coordinates: [-102.5528, 23.6345],
+      code: "MEX"
+    },
+    { 
+      name: "Australia", 
+      shipments: "1,763", 
+      suppliers: "15", 
+      value: "$1,42,13,942",
+      coordinates: [133.7751, -25.2744],
+      code: "AUS"
+    },
+    { 
+      name: "Brazil", 
+      shipments: "1,532", 
+      suppliers: "11", 
+      value: "$1,21,14,692",
+      coordinates: [-51.9253, -14.2350],
+      code: "BRA"
+    }
+  ]
+};
+
 // API service structure
 export const fetchCompanyInfo = async () => {
-  // Simulate API delay
   await new Promise(resolve => setTimeout(resolve, 300));
   return companyInfo;
 };
@@ -502,4 +660,14 @@ export const fetchVolumeTrendData = async () => {
 export const fetchSuppliersData = async () => {
   await new Promise(resolve => setTimeout(resolve, 300));
   return suppliersData;
+};
+
+export const fetchProductFlowData = async () => {
+  await new Promise(resolve => setTimeout(resolve, 300));
+  return productFlowData;
+};
+
+export const fetchImportMarketsData = async () => {
+  await new Promise(resolve => setTimeout(resolve, 300));
+  return importMarketsData;
 };

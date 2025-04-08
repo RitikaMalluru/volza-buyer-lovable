@@ -84,7 +84,7 @@ const VolumeTrend = () => {
         </Select>
       </div>
       
-      <div className="h-[300px] relative">
+      <div className="h-[250px] relative">
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart
             data={chartData}

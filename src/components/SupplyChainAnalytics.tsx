@@ -32,6 +32,21 @@ const ComparisonRow = ({
   rating: number; 
   maxRating: number;
 }) => {
+  // Parse numeric values from the strings, handling special cases
+  const parseValue = (value: string): number => {
+    // Remove any non-numeric characters except decimal points
+    const numericValue = value.replace(/[^0-9.]/g, '');
+    return parseFloat(numericValue) || 0;
+  };
+  
+  const yourNumericValue = parseValue(yourValue);
+  const theirNumericValue = parseValue(theirValue);
+  
+  // Calculate percentages
+  const total = yourNumericValue + theirNumericValue;
+  const yourPercentage = total > 0 ? (yourNumericValue / total) * 100 : 50;
+  const theirPercentage = total > 0 ? (theirNumericValue / total) * 100 : 50;
+  
   return (
     <div className="mb-3">
       <div className="mb-1 text-sm font-medium">{label}</div>
@@ -44,8 +59,14 @@ const ComparisonRow = ({
       <div className="flex items-center justify-between">
         <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden mr-2">
           <div className="flex h-full w-full">
-            <div className="h-full w-1/3 bg-blue-500 rounded-l-full"></div>
-            <div className="h-full w-2/3 bg-yellow-400 rounded-r-full"></div>
+            <div 
+              className="h-full bg-blue-500 rounded-l-full"
+              style={{ width: `${yourPercentage}%` }}
+            ></div>
+            <div 
+              className="h-full bg-yellow-400 rounded-r-full"
+              style={{ width: `${theirPercentage}%` }}
+            ></div>
           </div>
         </div>
         

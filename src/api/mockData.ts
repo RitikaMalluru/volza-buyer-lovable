@@ -1,4 +1,3 @@
-
 // Company information
 export const companyInfo = {
   name: "ANYOLI SDNBHD",
@@ -166,7 +165,14 @@ export const shipmentsTableData = {
     { name: "Feb", shipments: 78, growth: -4, value: 60, valueGrowth: -4 },
     { name: "Mar", shipments: 40, growth: 5, value: 60, valueGrowth: 5 },
     { name: "Apr", shipments: 89, growth: 8, value: 60, valueGrowth: 8 },
-    { name: "May", shipments: 30, growth: -1, value: 60, valueGrowth: -1 }
+    { name: "May", shipments: 30, growth: -1, value: 60, valueGrowth: -1 },
+    { name: "Jun", shipments: 45, growth: 3, value: 55, valueGrowth: 2 },
+    { name: "Jul", shipments: 65, growth: 7, value: 70, valueGrowth: 4 },
+    { name: "Aug", shipments: 35, growth: -2, value: 50, valueGrowth: -3 },
+    { name: "Sep", shipments: 85, growth: 9, value: 75, valueGrowth: 6 },
+    { name: "Oct", shipments: 60, growth: 4, value: 65, valueGrowth: 2 },
+    { name: "Nov", shipments: 42, growth: -3, value: 58, valueGrowth: -2 },
+    { name: "Dec", shipments: 75, growth: 6, value: 72, valueGrowth: 5 }
   ]
 };
 

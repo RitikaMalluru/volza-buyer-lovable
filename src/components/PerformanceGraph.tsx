@@ -1,7 +1,6 @@
 
 import { useState } from "react";
 import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { useQuery } from "@tanstack/react-query";
 import { fetchPerformanceData, fetchShipmentsTableData } from "@/api/mockData";
 import {
@@ -13,12 +12,11 @@ import {
   Tooltip,
   ResponsiveContainer,
   LineChart,
-  Line,
-  ReferenceDot
+  Line
 } from "recharts";
-import { SearchIcon, SlidersHorizontal } from "lucide-react";
-import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
@@ -44,6 +42,8 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 };
 
 const ShipmentsTable = () => {
+  const [showValue, setShowValue] = useState(false);
+  
   const { data, isLoading } = useQuery({
     queryKey: ["shipmentsTableData"],
     queryFn: fetchShipmentsTableData,
@@ -53,9 +53,26 @@ const ShipmentsTable = () => {
     return <div className="animate-pulse bg-gray-200 h-48 rounded-md"></div>;
   }
 
+  // Ensure we have all months from January to December
+  const allMonths = [
+    "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+  ];
+  
+  const monthsData = allMonths.map(month => {
+    // Find the month in the data, or create a placeholder
+    const existingData = data?.months.find((m: any) => m.name === month);
+    return existingData || {
+      name: month,
+      shipments: 0,
+      growth: 0,
+      value: 0,
+      valueGrowth: 0
+    };
+  });
+
   return (
     <div>
-      <div className="flex justify-between items-center mb-3">
+      <div className="flex justify-between items-center mb-4">
         <div className="flex items-center">
           <h3 className="text-sm font-semibold mr-2">Shipments</h3>
           <span className="bg-blue-100 text-blue-800 px-2 py-0.5 rounded-md text-xs">
@@ -71,91 +88,77 @@ const ShipmentsTable = () => {
         </div>
       </div>
       
-      <div className="flex items-center mb-3 space-x-2">
-        <div className="flex border-b">
-          <Button variant="ghost" className="border-b-2 border-blue-600 rounded-none px-3 text-xs h-8">
-            Month
-          </Button>
-          <Button variant="ghost" className="text-gray-500 rounded-none px-3 text-xs h-8">
-            QTR
-          </Button>
-          <Button variant="ghost" className="text-gray-500 rounded-none px-3 text-xs h-8">
-            Year
-          </Button>
-        </div>
-        
-        <div className="relative flex-1">
-          <SearchIcon className="absolute left-2 top-2 h-4 w-4 text-gray-500" />
-          <Input 
-            placeholder="Search" 
-            className="pl-8 border text-xs h-8"
+      <div className="flex items-center mb-4 space-x-2">
+        <div className="flex items-center space-x-2">
+          <span className="text-sm text-gray-700">{showValue ? "Value" : "Shipments"}</span>
+          <Switch 
+            checked={showValue}
+            onCheckedChange={setShowValue}
           />
         </div>
-        
-        <Button variant="outline" className="flex items-center gap-1 text-xs h-8">
-          <SlidersHorizontal className="h-3 w-3" /> Filters
-        </Button>
       </div>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <div className="flex justify-between text-xs text-gray-500 mb-1 px-2">
-            <span>Month</span>
-            <span>Rating</span>
-          </div>
-          
-          {data?.months.map((month: any, index: number) => (
-            <div key={index} className="flex justify-between items-center py-2 border-b text-sm">
-              <span className="font-medium text-xs">{month.name}</span>
-              
-              <div className="flex-1 mx-4">
-                <div className="h-1.5 bg-gray-200 rounded-full overflow-hidden">
-                  <div 
-                    className="h-full bg-blue-500 rounded-full"
-                    style={{ width: `${month.shipments}%` }}
-                  ></div>
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Month</TableHead>
+            <TableHead>Rating</TableHead>
+            <TableHead>Month</TableHead>
+            <TableHead>Rating</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {monthsData.slice(0, 6).map((month: any, index: number) => (
+            <TableRow key={index}>
+              <TableCell className="py-2 font-medium text-sm">{month.name}</TableCell>
+              <TableCell className="py-2">
+                <div className="flex items-center">
+                  <div className="flex-1 mr-4">
+                    <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
+                      <div 
+                        className="h-full bg-blue-500 rounded-full"
+                        style={{ width: `${showValue ? month.value : month.shipments}%` }}
+                      ></div>
+                    </div>
+                  </div>
+                  <div className="flex items-center">
+                    <span className="font-medium text-sm mr-1">
+                      {showValue ? month.value : month.shipments}
+                    </span>
+                    <span className={`text-xs ${(showValue ? month.valueGrowth : month.growth) > 0 ? 'text-green-500' : 'text-red-500'}`}>
+                      {(showValue ? month.valueGrowth : month.growth) > 0 ? '↑' : '↓'} 
+                      {Math.abs(showValue ? month.valueGrowth : month.growth)}%
+                    </span>
+                  </div>
                 </div>
-              </div>
+              </TableCell>
               
-              <div className="flex items-center">
-                <span className="font-medium text-xs mr-1">{month.shipments}</span>
-                <span className={`text-xs ${month.growth > 0 ? 'text-green-500' : 'text-red-500'}`}>
-                  {month.growth > 0 ? '↑' : '↓'} {Math.abs(month.growth)}%
-                </span>
-              </div>
-            </div>
-          ))}
-        </div>
-        
-        <div>
-          <div className="flex justify-between text-xs text-gray-500 mb-1 px-2">
-            <span>Month</span>
-            <span>Rating</span>
-          </div>
-          
-          {data?.months.map((month: any, index: number) => (
-            <div key={index} className="flex justify-between items-center py-2 border-b text-sm">
-              <span className="font-medium text-xs">{month.name}</span>
-              
-              <div className="flex-1 mx-4">
-                <div className="h-1.5 bg-gray-200 rounded-full overflow-hidden">
-                  <div 
-                    className="h-full bg-blue-500 rounded-full"
-                    style={{ width: `${month.value}%` }}
-                  ></div>
+              <TableCell className="py-2 font-medium text-sm">{monthsData[index + 6].name}</TableCell>
+              <TableCell className="py-2">
+                <div className="flex items-center">
+                  <div className="flex-1 mr-4">
+                    <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
+                      <div 
+                        className="h-full bg-blue-500 rounded-full"
+                        style={{ width: `${showValue ? monthsData[index + 6].value : monthsData[index + 6].shipments}%` }}
+                      ></div>
+                    </div>
+                  </div>
+                  <div className="flex items-center">
+                    <span className="font-medium text-sm mr-1">
+                      {showValue ? monthsData[index + 6].value : monthsData[index + 6].shipments}
+                    </span>
+                    <span className={`text-xs ${(showValue ? monthsData[index + 6].valueGrowth : monthsData[index + 6].growth) > 0 ? 'text-green-500' : 'text-red-500'}`}>
+                      {(showValue ? monthsData[index + 6].valueGrowth : monthsData[index + 6].growth) > 0 ? '↑' : '↓'} 
+                      {Math.abs(showValue ? monthsData[index + 6].valueGrowth : monthsData[index + 6].growth)}%
+                    </span>
+                  </div>
                 </div>
-              </div>
-              
-              <div className="flex items-center">
-                <span className="font-medium text-xs mr-1">{month.value}</span>
-                <span className={`text-xs ${month.valueGrowth > 0 ? 'text-green-500' : 'text-red-500'}`}>
-                  {month.valueGrowth > 0 ? '↑' : '↓'} {Math.abs(month.valueGrowth)}%
-                </span>
-              </div>
-            </div>
+              </TableCell>
+            </TableRow>
           ))}
-        </div>
-      </div>
+        </TableBody>
+      </Table>
     </div>
   );
 };
@@ -175,7 +178,7 @@ const PerformanceGraph = () => {
   return (
     <Card className="p-4 shadow-sm">
       <div className="flex justify-between items-center mb-3">
-        <h2 className="text-sm font-semibold">Import Performance</h2>
+        <h2 className="text-lg font-semibold">Import Performance</h2>
         
         <div className="flex items-center">
           <div className="mr-4 text-sm">

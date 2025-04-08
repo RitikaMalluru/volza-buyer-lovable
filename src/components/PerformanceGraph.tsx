@@ -88,14 +88,14 @@ const ShipmentsTable = () => {
         </div>
       </div>
       
-      <div className="flex items-center mb-4 space-x-2">
-        <div className="flex items-center space-x-2">
-          <span className="text-sm text-gray-700">{showValue ? "Value" : "Shipments"}</span>
-          <Switch 
-            checked={showValue}
-            onCheckedChange={setShowValue}
-          />
-        </div>
+      <div className="flex items-center mb-4 justify-center space-x-3">
+        <span className={`text-sm ${!showValue ? 'font-medium text-blue-600' : 'text-gray-500'}`}>Shipments</span>
+        <Switch 
+          checked={showValue}
+          onCheckedChange={setShowValue}
+          className="data-[state=checked]:bg-blue-500"
+        />
+        <span className={`text-sm ${showValue ? 'font-medium text-blue-600' : 'text-gray-500'}`}>Value</span>
       </div>
       
       <Table>
@@ -116,7 +116,7 @@ const ShipmentsTable = () => {
                   <div className="flex-1 mr-4">
                     <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
                       <div 
-                        className="h-full bg-blue-500 rounded-full"
+                        className={`h-full rounded-full ${showValue ? 'bg-blue-400' : 'bg-blue-600'}`}
                         style={{ width: `${showValue ? month.value : month.shipments}%` }}
                       ></div>
                     </div>
@@ -139,7 +139,7 @@ const ShipmentsTable = () => {
                   <div className="flex-1 mr-4">
                     <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
                       <div 
-                        className="h-full bg-blue-500 rounded-full"
+                        className={`h-full rounded-full ${showValue ? 'bg-blue-400' : 'bg-blue-600'}`}
                         style={{ width: `${showValue ? monthsData[index + 6].value : monthsData[index + 6].shipments}%` }}
                       ></div>
                     </div>
